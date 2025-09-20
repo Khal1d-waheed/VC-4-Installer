@@ -172,8 +172,9 @@ Check this file for troubleshooting.
 
 ## Post-Install System Tuning
 
-The wrapper applies Crestron-recommended sysctl networking settings automatically, but you can verify manually:
- ```cat /etc/sysctl.conf
+The wrapper applies Crestron-recommended sysctl networking settings automatically, but you can verify manually: 
+```
+cat /etc/sysctl.conf
 ```
 Expected lines:
 ```
