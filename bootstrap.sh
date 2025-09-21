@@ -255,44 +255,52 @@ fi
 # --------------------------------------------------
 # Step 11: Prompt for License if Needed + Re-Check Loop
 # --------------------------------------------------
-if [ "$NEED_LICENSE" = true ]; then
-  echo "-------------------------------------------------"
-  echo "Your VC-4 installation needs a valid license."
-  echo "Options:"
-  echo "  1) Enter full path to license file"
-  echo "  2) Paste license text directly (multi-line, finish with Ctrl+D)"
-  read -rp "Enter license file path or type 'paste': " INPUT
+while true; do
+  STATUS=$(check_license_status)
 
-  if [ "$INPUT" = "paste" ]; then
-    echo "Paste your license certificate below. When finished, press Ctrl+D:"
-    TMPFILE=$(mktemp)
-    cat > "$TMPFILE"
-    mv "$TMPFILE" "$LICENSE_FILE"
-  elif [ -n "$INPUT" ] && [ -f "$INPUT" ]; then
-    cp "$INPUT" "$LICENSE_FILE"
+  if [ "$STATUS" = "VALID" ]; then
+    echo "License Status: VALID"
+    break
+  elif [ "$STATUS" = "TRIAL" ]; then
+    echo "License Status: TRIAL (may expire, consider applying a license)"
+    break
   else
-    echo "No license provided. VC-4 may run in limited or trial mode."
-  fi
+    echo "-------------------------------------------------"
+    echo "Your VC-4 installation needs a valid license."
+    echo "Options:"
+    echo "  1) Enter full path to license file"
+    echo "  2) Paste license text directly (multi-line, finish with Ctrl+D)"
+    read -rp "Enter license file path or type 'paste': " INPUT
 
-  echo "Restarting VC-4 service..."
-  systemctl restart virtualcontrol.service
-
-  echo "Re-checking license status (up to 2 minutes)..."
-  for i in {1..12}; do
-    sleep 10
-    STATUS=$(check_license_status)
-    if [ "$STATUS" = "VALID" ]; then
-      echo "License Status: VALID"
-      NEED_LICENSE=false
-      break
+    if [ "$INPUT" = "paste" ]; then
+      echo "Paste your license certificate below. When finished, press Ctrl+D:"
+      TMPFILE=$(mktemp)
+      cat > "$TMPFILE"
+      mv "$TMPFILE" "$LICENSE_FILE"
+    elif [ -n "$INPUT" ] && [ -f "$INPUT" ]; then
+      cp "$INPUT" "$LICENSE_FILE"
+    else
+      echo "No license provided. VC-4 cannot proceed without a valid license."
+      continue
     fi
-    echo "[$i/12] License not valid yet, retrying..."
-  done
 
-  if [ "$NEED_LICENSE" = true ]; then
-    echo "License still not valid after retries. Please check manually."
+    echo "Restarting VC-4 service..."
+    systemctl restart virtualcontrol.service
+
+    echo "Re-checking license status (up to 2 minutes)..."
+    for i in {1..12}; do
+      sleep 10
+      STATUS=$(check_license_status)
+      if [ "$STATUS" = "VALID" ]; then
+        echo "License Status: VALID"
+        break 2   # Exit both for-loop and while-loop
+      fi
+      echo "[$i/12] License not valid yet, retrying..."
+    done
+
+    echo "License still not valid after retries. Let's try again..."
   fi
-fi
+done
 
 # --------------------------------------------------
 # Step 12: Wait for WebApp
