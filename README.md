@@ -94,7 +94,7 @@ cd ~/VC-4 Installer
 ```
 2- Make the wrapper script executable: 
 ```
-Make the wrapper script executable:
+chmod +x bootstrap.sh
 ```
 3- Run the wrapper as root:
 ```
