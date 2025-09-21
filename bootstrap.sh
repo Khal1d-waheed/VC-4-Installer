@@ -303,7 +303,7 @@ STATUS=""
 for i in {1..30}; do
   VC4_PORT=$(ss -tulpn 2>/dev/null | grep -E 'node|VirtualControl|webApp' | awk '{print $5}' | grep -oE '[0-9]+$' | head -n 1 || true)
   if [ -n "$VC4_PORT" ]; then
-    SERVER_IP=$(hostname -I | awk '{for(i=1;i<=NF;i++){if($i !~ /^127/ && $i !~ /^192\.168\.122/){print $i; exit}}}')
+    SERVER_IP=$(hostname -I | awk '{for(i=1;i<=NF;i++){if($i !~ /^127/ && $i !~ /^169\.254/ && $i !~ /^192\.168\.122/){print $i; exit}}}')
     SERVER_IP=${SERVER_IP:-localhost}
     STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://$SERVER_IP:$VC4_PORT/VirtualControl/config/settings/" || true)
     if [ "$STATUS" = "200" ]; then
@@ -319,6 +319,7 @@ if [ -z "$VC4_PORT" ] || [ "$STATUS" != "200" ]; then
   echo "Error: VC-4 WebApp did not become ready after 5 minutes"
   exit 1
 fi
+
 
 # --------------------------------------------------
 # Step 13: Print Final Access URL
