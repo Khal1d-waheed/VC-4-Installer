@@ -5,7 +5,7 @@ This repository provides a **pure installer wrapper** for Crestron VC-4, designe
 
 ---
 
-## 🎯 Why This Wrapper?
+## Why This Wrapper?
 
 Installing Crestron VC-4 manually can be error-prone, time-consuming, and confusing, especially when dealing with strict OS requirements, dependency mismatches, license handling, and service readiness.
 
@@ -21,12 +21,12 @@ Here’s what sets it apart:
 
 - *Zero Guesswork for the User* – Users no longer need to puzzle over which dependencies to install, where to place the Crestron installer, how to apply the license, or whether the WebApp is live. The wrapper automates all of it, turning what used to be a multi-step, error-prone process into a single streamlined command.
 
-✅ **In short:** run one command and get a working VC-4 install
+ **In short:** run one command and get a working VC-4 install
 ```bash
 sudo ./bootstrap.sh
 ```
 ---
-## ⚖️ Manual Install vs Wrapper Install
+## Manual Install vs Wrapper Install
 
 ```
 ___________________________________________________________________________________________________________________________________________________________________
@@ -46,7 +46,7 @@ ________________________________________________________________________________
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ```
 
-## 📦 Supported Operating Systems
+## Supported Operating Systems
 
 The wrapper has been validated on:
 
@@ -56,11 +56,11 @@ The wrapper has been validated on:
 
 - Rocky Linux 8.4+ / 9
 
-⚠️ Ubuntu and other distros are not supported by Crestron and are excluded here.
+Ubuntu and other distros are not supported by Crestron and are excluded here.
 
 ---
 
-## ⚙️ Prerequisites
+## Prerequisites
 
 A supported Linux distribution (see above).
 
@@ -70,7 +70,7 @@ Crestron VC-4 installer archive (.zip, .tar.gz, .tgz, or .tar).
 
 ---
 
-## 📂 Folder Setup
+## Folder Setup
 
 Rename the folder as "VC4-Installer", where Crestron Installer as well as the bootstrap.sh file will be placed.
 Clone or download this repository and place the Crestron installer archive in the same folder as bootstrap.sh:
@@ -86,7 +86,7 @@ Rename the installer file if needed, but it must be in the same directory as the
 
 ---
 
-## 🚀 Installation
+## Installation
 
 1- Open a terminal and navigate to the folder containing the VC-4 installer and the bootstrap.sh wrapper (the VC-4 Installer Folder).
 ``` 
@@ -133,7 +133,7 @@ The wrapper will:
 
 ---
 
-## 🔑 License Handling
+## License Handling
 
 If no license is found, you’ll be prompted to provide one.
 
@@ -147,7 +147,7 @@ The wrapper ensures the license is copied to the correct location and verifies i
 
 ---
 
-## ✅ Example Final Output
+## Example Final Output
 
 At the end of a successful install you’ll see:
 ```
@@ -159,7 +159,7 @@ Access VC-4 via:→ http://<server-ip>/VirtualControl/config/settings/
 ```
 ---
 
-## 📖 Logs
+## Logs
 
 All actions and errors are logged to:
 ```
@@ -191,7 +191,7 @@ sysctl net.ipv4.tcp_retries2
 ```
 ---
 
-## ⚠️ Notes
+## Notes
 
 - This wrapper does not bypass licensing requirements. A valid Crestron license is mandatory for production.
 
@@ -202,8 +202,8 @@ These scripts provide additional system hardening and align your deployment with
 
 ---
 
-## 🛠️ Quick Troubleshooting
-- ❌ WebApp not ready after 5 minutes
+##  Quick Troubleshooting
+-  WebApp not ready after 5 minutes
 
 Cause: VC-4 service may be slow to start or failed during initialization.
 Fix:
@@ -215,7 +215,7 @@ systemctl restart virtualcontrol.service
 Also ensure no conflicting processes are binding ports (e.g. 3030).
 
 
-- ❌ License still invalid after paste/file
+- License still invalid after paste/file
 
 Cause: License may be expired, corrupted, or not properly applied.
 Fix:
@@ -226,7 +226,7 @@ curl -s http://localhost:3030/api/license/status
 
 If expired → request a new license from Crestron.
 
-- ❌ Port not detected / blocked
+- Port not detected / blocked
 
 Cause: Firewall may be blocking VC-4 ports.
 Fix:
@@ -234,7 +234,7 @@ Fix:
 firewall-cmd --permanent --add-port=3030/tcp
 firewall-cmd --reload
 ```
-- ❌ Missing Python/Dependencies
+- Missing Python/Dependencies
 
 Cause: OS repos may not provide Python 3.9 or required libs.
 Fix:
@@ -244,7 +244,7 @@ yum install -y python39 python39-pip python39-devel
 ```
 ---
 
-## 🤝 Contribution
+## Contribution
 
 Pull requests and improvements are welcome.
 Please fork the repo and submit a PR.
